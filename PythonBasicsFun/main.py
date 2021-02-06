@@ -190,6 +190,7 @@ def read_table(filename):
     for line in lines:
         line = line.strip() # Remove leading and trailing whitespace characters
         values = line.split(",") # Split the string by comma into a list of strings
+        convert_to_numeric(values)
         table.append(values)
         print(values)
 
@@ -200,5 +201,69 @@ def read_table(filename):
 
     return table
 
+def write_table(filename, table):
+    outfile = open(filename, "w")
+    lastRow = table[len(table) - 1]
+    
+    for row in table:
+        for i in range(len(row) - 1):
+            outfile.write(str(row[i]) + ",")
+            print(row[i])
+        
+        # Determine if the table is on the last row - if not, insert a newline
+        if row != lastRow:
+        # Insert a newline at the end of each row
+            outfile.write(str(row[i]) + "\n")
+    
+
+
+    outfile.close()
+
+
 table = read_table("msrp.csv")
+print(table)
+write_table("mrsp_copy.csv", table)
 # print(table)
+
+
+# Classes
+# class: a collection of state (attributes) and behavior (methods)
+# that completely describes something
+# object: isntance of a class
+
+class Subject:
+    """
+    Represents a subject in a research study
+
+    Attributes:
+        sid(int): unqiuely identifies a subject in the study
+        name(str): name of the subject
+        measurements(dict of string:float): measurements taken at a certain timestamp
+
+        num_subject(int): class-level attribute that tracks the total num of subjects in the study
+    """
+
+    num_subjects = 0 # class level attribute
+    # meaning, one num_subjects variable is shared among all Subject objects
+
+    # __init__() is a special method that initialized a new object
+    # good practice is declare (and initialize) your instance-level methods there
+    # self refers to the "current" AKA "invoking" object
+    def __init__(self, name, measurements={}):
+        self.sid = Subject.num_subjects # auto-incrementing primary key
+        Subject.num_subjects += 1
+        self.name = name
+        self.measurements = measurements
+
+    # __str__() is special method that is implciitly called
+    # whenever a string representation of an object is needed
+    def __str__(self):
+        return "SID: " + str(self.sid) + " NAME: " + self.name +  \
+            " MEASUREMENTS: " + str(self.measurements)
+
+    
+spike = Subject("Spike")
+print(spike)
+
+test = Subject("TestSubject", {"2.2.2021", 1.55})
+print(test.measurements)
