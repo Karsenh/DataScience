@@ -148,7 +148,6 @@ def main():
     #   High Variance = far from the mean
     #  Standard Deviation: Square of teh variance
     #  TODO: Computer variance and std dev and compare with numpy
-    #  Talk about quantiles
 
     # Squared mean deviations is each value - the mean, squared
     squared_mean_deviations = [(x - msrp_mean) ** 2 for x in msrps] # List comprehension
@@ -157,12 +156,23 @@ def main():
     msrp_variance = sum(squared_mean_deviations) / len(squared_mean_deviations)
     print("Varaince = ", msrp_variance)
 
-    # Stdev is the sqrt of the variance
+    # Stdev is the sqrt of the variance (Check with numpy)
     msrp_stdev = math.sqrt(msrp_variance)
     print("stdev = ", msrp_stdev, np.std(msrps)) # These should be equal
 
+    # For NOMRALLY Distributed data (bell shaped curve)
+    # Empirical Rule
+    # 68% of the data is within mean +/- 1 stdev
+    # 95% of the data is within +/- 2 stdev
+    # 99.7% of the data is within mean +/- 3 stdev
 
-
+    # QUANTILES
+    # Quantiles are (essentially partitions of data) used to partition (sorted) data into 
+    # roughly equal size groups.
+    # 2-quantiles: 2 groups; 1 cut-off point (median) - sorted values middle value
+    # quartiles: 4 groups; 3 cut-offs
+    # percentiles: 100 groups; 99 cut-offs
+    # more on percentiles later...
 
 
 if __name__ == "__main__":
