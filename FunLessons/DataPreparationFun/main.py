@@ -1,3 +1,7 @@
+import random
+import math
+import numpy as np
+
 def get_column(table, header, col_name):
 
     # Create a var for the index of the col to get by checking its position in the header
@@ -20,6 +24,66 @@ def get_min_max(values):
     # Return multiple values
     # via a tuple (immutable list that is often used to packing and unpacking values)
     return min(values), max(values)
+
+def get_frequencies(table, header, col_name):
+    # Isolate a column to check for value / frequencies
+    col = get_column(table, header, col_name)
+
+    # Sort the column using python sorth method
+    col.sort()
+    # Create empty array to store values and frequency counts
+    values = []
+    counts = []
+
+    # for each value in the col...
+    for value in col:
+        # if the current value is not in the values array...
+        if value not in values:
+            # first time we've seen this value - insert it into the values array
+            values.append(value)
+            counts.append(1)
+        else: 
+            # we have seen this value before - so the previous count index should be incremented again
+            counts[-1] += 1 # OK because list is osrted 
+
+    return values, counts
+
+# 
+# Quiz question answers
+# 
+def generate_rand_table(num_rows, num_cols):
+    # Create an empty array to store rows and cols
+    randTable = []
+
+    # for each row
+    for _ in range(num_rows):
+        # create a new row array
+        row = []
+        # for each col
+        for _ in range(num_cols):
+            row.append(random.randint(0, 99))
+        # Append that row to the table
+        randTable.append(row)
+
+    return randTable
+
+
+def find_min(table):
+    mins = []
+
+    for row in table:
+        mins.append(min(row))
+
+    return min(mins)
+
+
+def find_max(table):
+    maxes = []
+    
+    for row in table:
+        maxes.append(max(row))
+
+    return max(maxes)
  
 
 
@@ -33,7 +97,9 @@ def main():
     msrps = get_column(msrp_table, header, "MSRP")
     print(msrps)
 
-
+    # warm up
+    modelYear_values, modelYear_counts = get_frequencies(msrp_table, header, "ModelYear")
+    print("Model Year Vals: ", modelYear_values, "Model Year Count: ", modelYear_counts)
 
     # More on attributes
     # 1. what is the type of an attribute?
@@ -83,6 +149,18 @@ def main():
     #  Standard Deviation: Square of teh variance
     #  TODO: Computer variance and std dev and compare with numpy
     #  Talk about quantiles
+
+    # Squared mean deviations is each value - the mean, squared
+    squared_mean_deviations = [(x - msrp_mean) ** 2 for x in msrps] # List comprehension
+
+    # Variance is the sum of the squared mean deviations divided by the number of them
+    msrp_variance = sum(squared_mean_deviations) / len(squared_mean_deviations)
+    print("Varaince = ", msrp_variance)
+
+    # Stdev is the sqrt of the variance
+    msrp_stdev = math.sqrt(msrp_variance)
+    print("stdev = ", msrp_stdev, np.std(msrps)) # These should be equal
+
 
 
 
